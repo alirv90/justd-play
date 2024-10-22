@@ -47,13 +47,14 @@ const itemStyles = tv({
     "[&_[data-expanded]_[slot=chevron]_[data-slot=icon]]:rotate-90 outline-none [--padding:20px] p-[0.286rem_0.286rem_0.286rem_0.571rem] pl-[calc((var(--tree-item-level)-1)*20px+0.571rem+var(--padding))]",
     "[&_[slot=chevron]]:outline-none [&_[slot=chevron]_[data-slot=icon]]:text-muted-fg",
     "data-[has-child-rows]:[--padding:0px]",
+    "hover:bg-primary/10",
   ],
   variants: {
     isExpanded: {
       true: "[&_[slot=chevron]_[data-slot=icon]]:text-fg [&_[slot=chevron]_[data-slot=icon]]:rotate-90 [&_[slot=chevron]_[data-slot=icon]]:transition [&_[slot=chevron]_[data-slot=icon]]:duration-200",
     },
     isFocusVisible: {
-      true: "[&_[slot=chevron]_[data-slot=icon]]:text-fg focus:outline-none focus-visible:ring-1 focus-visible:ring-primary",
+      true: "[&_[slot=chevron]_[data-slot=icon]]:text-fg focus:outline-none focus-visible:bg-primary/20",
     },
     isDisabled: {
       true: "opacity-50 forced-colors:text-[GrayText]",
