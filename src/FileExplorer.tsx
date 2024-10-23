@@ -72,6 +72,7 @@ const FileTreeItem = (props: TreeItemProps<FileNode>) => {
     }
 
     console.log("focusing");
+    itemRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [props.id]);
 
   return (
@@ -122,45 +123,60 @@ export default function FileExplorer(props: TreeProps<unknown>) {
       rowHeight: 35,
     });
   });
-  const [selection, setSelection] = useState<Selection>(new Set([23]));
+  const [selection, setSelection] = useState<Selection>(new Set([]));
   const [expandedKeys, setExpandedKeys] = useState<Set<Key>>();
   const treeRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    //treeRef.current?.focus();
-  }, []);
-
   return (
-    <Virtualizer layout={layout}>
-      <Tree
-        ref={treeRef}
-        className={cr(props.className, (className, renderProps) =>
-          treeStyles({
-            ...renderProps,
-            className,
-          })
-        )}
-        {...props}
-        selectionMode="single"
-        onSelectionChange={(sel) => {
-          setSelection(sel);
+    <div className="flex flex-col gap-2">
+      <Button
+        onPress={() => {
+          console.log("scrolling to Portfolio");
+          setSelection(new Set([23]));
+
+          // Add this to simulate Tab press
+          setTimeout(() => {
+            const event = new KeyboardEvent("keydown", {
+              key: "Tab",
+              bubbles: true,
+            });
+            treeRef.current?.dispatchEvent(event);
+          }, 0);
         }}
-        selectedKeys={selection}
-        defaultExpandedKeys={[1, 2, 3, 4, 21, 22, 23]}
-        expandedKeys={expandedKeys}
-        onExpandedChange={(keys) => {
-          setExpandedKeys(keys);
-        }}
-        aria-label="File Explorer"
-        items={files}
       >
-        {(item: FileNode) => (
-          <FileTreeItem id={item.id} textValue={item.title}>
-            {item.title}
-          </FileTreeItem>
-        )}
-      </Tree>
-    </Virtualizer>
+        Scroll to Portfolio
+      </Button>
+      <Virtualizer layout={layout}>
+        <Tree
+          ref={treeRef}
+          className={cr(props.className, (className, renderProps) =>
+            treeStyles({
+              ...renderProps,
+              className,
+            })
+          )}
+          {...props}
+          selectionMode="single"
+          onSelectionChange={(sel) => {
+            setSelection(sel);
+          }}
+          selectedKeys={selection}
+          defaultExpandedKeys={[1, 2, 3, 4, 21, 22, 23]}
+          expandedKeys={expandedKeys}
+          onExpandedChange={(keys) => {
+            setExpandedKeys(keys);
+          }}
+          aria-label="File Explorer"
+          items={files}
+        >
+          {(item: FileNode) => (
+            <FileTreeItem id={item.id} textValue={item.title}>
+              {item.title}
+            </FileTreeItem>
+          )}
+        </Tree>
+      </Virtualizer>
+    </div>
   );
 }
 
